@@ -1,0 +1,59 @@
+{
+    "info": {
+      "_postman_id": "your-postman-id",
+      "name": "Task Management API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Register User",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": { "raw": "{{base_url}}/register", "host": ["{{base_url}}"], "path": ["register"] },
+          "body": { "mode": "raw", "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}" }
+        }
+      },
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "url": { "raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"] },
+          "body": { "mode": "raw", "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}" }
+        }
+      },
+      {
+        "name": "Get All Tasks",
+        "request": {
+          "method": "GET",
+          "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+          "url": { "raw": "{{base_url}}/tasks", "host": ["{{base_url}}"], "path": ["tasks"] }
+        }
+      },
+      {
+        "name": "Create Task",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Authorization", "value": "Bearer {{token}}" },
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "url": { "raw": "{{base_url}}/tasks", "host": ["{{base_url}}"], "path": ["tasks"] },
+          "body": { "mode": "raw", "raw": "{\n  \"title\": \"New Task\",\n  \"description\": \"Task description\",\n  \"due_date\": \"2025-03-20T10:00:00\"\n}" }
+        }
+      },
+      {
+        "name": "Delete Task",
+        "request": {
+          "method": "DELETE",
+          "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+          "url": { "raw": "{{base_url}}/tasks/1", "host": ["{{base_url}}"], "path": ["tasks", "1"] }
+        }
+      }
+    ],
+    "variable": [
+      { "key": "base_url", "value": "http://127.0.0.1:8000" },
+      { "key": "token", "value": "" }
+    ]
+}
