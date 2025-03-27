@@ -72,3 +72,8 @@ Once the server is running, you can view the API documentation at:
 
 # Testing with Postman
 - Import the postman/task_manager.postman_collection.json file into Postman and test the endpoints.
+
+## Testing with Pytest:
+
+- pip install pytest
+- pytest test.py
