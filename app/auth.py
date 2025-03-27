@@ -1,7 +1,7 @@
 import jwt
 from jwt.exceptions import PyJWTError
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 import secrets
@@ -11,7 +11,7 @@ SECRET_KEY = secrets.token_hex(32) # Generate a secure secrets key
 ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = HTTPBearer()
 
  
 def get_password_hash(password: str):
@@ -21,6 +21,7 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 def create_access_token(data: dict) -> str:
+    
     return jwt.encode(data, SECRET_KEY, algorithm=ALGORITHM)
 
 def register_user(db: Session, user: schemas.UserCreate):
@@ -44,7 +45,8 @@ def login_user(db: Session, user: schemas.UserLogin):
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)): # earlier there was no db: Session which was causing problems in fetching the current users
     credentials_exception = HTTPException(status_code = status.HTTP_401_UNAUTHORIZED, detail = "Could not validate credentials", headers = {"WWW-Authenticate": "Bearer"})
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(f"Token:{token.credentials}")
+        payload = jwt.decode(token.credentials, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         user_id: int = payload.get("user_id")
         if not username or not user_id:
